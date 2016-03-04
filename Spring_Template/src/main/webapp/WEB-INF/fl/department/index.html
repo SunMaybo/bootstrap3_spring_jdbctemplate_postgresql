@@ -68,10 +68,8 @@
 						<div class="panel-heading">
 							<i class="fa fa-sitemap"></i> 部门管理
 							<div class="panel-tools">
-								<a class="btn" id="addClick" href="#" data-toggle="tooltip"
-									title="添加"><span class="glyphicon glyphicon-plus"></span> </a>
-								<a class="btn" id="editClick" href="#" data-toggle="tooltip"
-									title="编辑"><span class="glyphicon glyphicon-edit"></span> </a>
+								<a class="btn" id="addClick" href="#" data-toggle="tooltip" title="添加"><span class="glyphicon glyphicon-plus"></span> </a>
+								<a class="btn" id="editClick" href="#" data-toggle="tooltip" title="编辑"><span class="glyphicon glyphicon-edit"></span> </a>
 								<a class="btn" id="rmClick" href="#" data-toggle="tooltip"
 									title="删除"><span class="glyphicon glyphicon-trash"></span> </a>
 								<a class="btn btn-xs btn-link panel-collapse collapses" href="#">
@@ -225,8 +223,8 @@
 								layer
 										.open({
 											type : 2,
-											area : [ '800px', '860px' ],
-											title : '添加用户',
+											area : [ '600px', '400px' ],
+											title : '添加部门',
 											shadeClose : true, //点击遮罩关闭层
 											content : '${base.contextPath}/department/editView?state="add"&id=0'
 										});
@@ -291,8 +289,8 @@
 									layer
 											.open({
 												type : 2,
-												area : [ '800px', '860px' ],
-												title : '添加用户',
+												area : [ '600px', '400px' ],
+												title : '修改部门',
 												shadeClose : true, //点击遮罩关闭层
 												content : '${base.contextPath}/department/editView?state='
 														+ "edit"

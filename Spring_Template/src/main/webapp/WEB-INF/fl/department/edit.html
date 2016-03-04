@@ -95,7 +95,7 @@
 						</div>
 						<div class="row" style="margin-top: 60px;">
 							<div class="col-md-4">
-								<button class="btn btn-yellow btn-block" type="button" id="btn"
+								<button class="btn btn-yellow btn-block" type="button"
 									id="editClick">
 									添加 <i class="fa fa-arrow-circle-right"></i>
 								</button>
@@ -155,7 +155,6 @@
 		$('#editClick').on(
 				"click",
 				function() {
-
 					$.ajax({
 						url : "${base.contextPath}/department/edit",
 						type : 'post',
@@ -207,7 +206,7 @@
 		function initParam() {
 			var state = '${state}';
 			if (state == 'edit') {
-				$('#btn').html("修改");
+				$('#editClick').html("修改");
 				$.ajax({
 					url : "${base.contextPath}/department/find?id=" + '${id}',
 					type : 'get',

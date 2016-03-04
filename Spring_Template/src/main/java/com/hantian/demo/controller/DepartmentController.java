@@ -1,7 +1,9 @@
 package com.hantian.demo.controller;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,9 +29,9 @@ public class DepartmentController {
 	@RequestMapping("/edit")
 	@ResponseBody
 	public Integer edit(@ModelAttribute Department department) {
-		
+
 		int status = 0;
-		
+
 		try {
 			departmentService.saveOrUpdate(department);
 			status = 1;
@@ -72,38 +74,64 @@ public class DepartmentController {
 	@ResponseBody
 	public List<DepartmentTree> listTree() {
 		List<Department> departments = departmentService.list();
-		List<DepartmentTree> departmentTrees = toDepartmentTrees(departments);
-		return departmentTrees;
-	}
-
-	private List<DepartmentTree> toDepartmentTrees(List<Department> departments) {
 		List<DepartmentTree> departmentTrees = new ArrayList<DepartmentTree>();
-		for (int i = 0; null != departments && i < departments.size(); i++) {
+		int i = 0;
+		while (true) {
 			int flag = 0;
-			for (int j = 0; null != departmentTrees
-					&& j < departmentTrees.size(); j++) {
-				if (null != departments.get(i).getParent()
-						&& departments.get(i).getParent().getId() == departmentTrees
-								.get(j).getId()) {
+			toDepartmentTrees(departmentTrees, departments.get(i));
+			for (int j = 0; null != departments && j < departments.size(); j++) {
+				if (departments.get(j).getId() >= 0) {
 					flag = 1;
-					DepartmentTree departmentTree = new DepartmentTree();
-					departmentTree.setId(departments.get(i).getId());
-					departmentTree.setTitle(departments.get(i).getName());
-					departmentTree.setKey(departments.get(i).getId() + "");
-					departmentTrees.get(j).getChildren().add(departmentTree);
 					break;
-
 				}
 			}
 			if (flag == 0) {
-				DepartmentTree departmentTree = new DepartmentTree();
-				departmentTree.setId(departments.get(i).getId());
-				departmentTree.setTitle(departments.get(i).getName());
-				departmentTree.setKey(departments.get(i).getId() + "");
-				departmentTrees.add(departmentTree);
+				break;
+			}
+			i++;
+			if (i >= departments.size()) {
+				i = 0;
 			}
 		}
+
 		return departmentTrees;
+	}
+
+	private void toDepartmentTrees(List<DepartmentTree> departmentTrees,
+			Department department) {
+		if (null == department) {
+			return;
+		} else {
+			if (null == department.getParent()
+					|| department.getParent().getId() == 0) {
+				DepartmentTree departmentTree = new DepartmentTree();
+				departmentTree.setTitle(department.getName());
+				departmentTree.setId(department.getId());
+				departmentTree.setKey(department.getId() + "");
+				departmentTrees.add(departmentTree);
+				department.setId(-1);
+				return;
+			} else {
+				for (int i = 0; null != departmentTrees
+						&& i < departmentTrees.size(); i++) {
+					if (null != department.getParent()
+							&& departmentTrees.get(i).getId() == department
+									.getParent().getId()) {
+						DepartmentTree departmentTree = new DepartmentTree();
+						departmentTree.setTitle(department.getName());
+						departmentTree.setKey(department.getId() + "");
+						departmentTree.setId(department.getId());
+						departmentTrees.get(i).getChildren()
+								.add(departmentTree);
+						department.setId(-1);
+
+					} else {
+						toDepartmentTrees(departmentTrees.get(i).getChildren(),
+								department);
+					}
+				}
+			}
+		}
 	}
 
 	@RequestMapping("find")
